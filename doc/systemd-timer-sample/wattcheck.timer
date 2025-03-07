@@ -1,0 +1,10 @@
+[Unit]
+Description=Run wattcheck every minute
+
+[Timer]
+# You may want to change the values here
+OnBootSec=5min
+OnUnitActiveSec=1min
+
+[Install]
+WantedBy=timers.target

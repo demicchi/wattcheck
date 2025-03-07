@@ -1,0 +1,36 @@
+[wattcheck]
+datastore = "influx2-datastore-test"  # This means credentials in [influx2-datastore-test] will be used.
+sensor_timezone = 9  # 9 means +0900. You can also specify decimal numbers here such as 8.5, which means +0830
+use_sensor_timestamp = true  # If true, save measured data with timestamps from sensors. If false, use the server's timestamp.
+
+# You can specify multiple sensors by duplicating [[sensors]]
+
+[[sensors]]
+ip = "192.168.1.101"
+port = 60101
+
+[[sensors]]
+ip = "192.168.1.102"
+port = 60101
+
+[[sensors]]
+ip = "192.168.1.103"
+port = 60101
+
+# You can specify multiple credentials of DBs. However, only one credential can be used as set at `datastore` in [wattcheck].
+
+[influx2-datastore-test]
+type = "influx2"  # Only influxDB2 is supported for now.
+url = "http://localhost:8086"
+org = "my-awesome-org"
+token = "TOKEN-HERE"
+bucket = "myhome"
+measurement = "watt-record"
+
+[influx2-datastore-release]
+type = "influx2"
+url = "http://datastore2:8086"
+org = "my-fantastic-org"
+token = "TOKEN-HERE"
+bucket = "myhome"
+measurement = "watt-record"

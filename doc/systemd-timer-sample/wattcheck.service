@@ -1,0 +1,10 @@
+[Unit]
+Description=Run wattcheck as a user wattcheck
+
+[Service]
+Type=oneshot
+User=wattcheck
+# Set a correct directory where wattcheck is placed.
+WorkingDirectory=/opt/wattcheck/wattcheck
+# Set a correct path of venv/bin/python and wattchech.py
+ExecStart=/opt/wattcheck/wattcheck/venv/bin/python /opt/wattcheck/wattcheck/wattcheck.py
