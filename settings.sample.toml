@@ -8,17 +8,14 @@ use_sensor_timestamp = true  # If true, save measured data with timestamps from 
 [[sensors]]
 type = "RS-WFWATTCH1"  # type = "RS-WFWATTCH1" | "RS-WFWATTCH2"
 ip = "192.168.1.101"
-port = 60101
 
 [[sensors]]
 type = "RS-WFWATTCH1"
 ip = "192.168.1.102"
-port = 60101
 
 [[sensors]]
 type = "RS-WFWATTCH2"
 ip = "192.168.1.103"
-port = 60121
 
 # You can specify multiple credentials of DBs. However, only one credential can be used as set at `datastore` in [wattcheck].
 

@@ -20,9 +20,9 @@ def main():
     for sensor in settings['sensors']:
         match sensor['type']:
             case 'RS-WFWATTCH1':
-                wattcheck_client = wattchecklib.Command(sensor['ip'], sensor['port'])
+                wattcheck_client = wattchecklib.Command(sensor['ip'])
             case 'RS-WFWATTCH2':
-                wattcheck_client = wattchecklib.Command2(sensor['ip'], sensor['port'])
+                wattcheck_client = wattchecklib.Command2(sensor['ip'])
             case _:
                 raise NotImplementedError
         sensor_name = wattcheck_client.get_name()
