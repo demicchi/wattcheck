@@ -1,12 +1,15 @@
 # wattcheck 
 ## Overview
-Unofficial logger for RS-WFWATTCH1. 
-This program collects measurements from RS-WFWATTCH1 and stores the data into InfluxDB2.
+Unofficial logger for RS-WFWATTCH1 and RS-WFWATTCH2. 
+This program collects measurements from RS-WFWATTCH1 and RS-WFWATTCH2 and stores the data into InfluxDB2.
 
 ## Warning
-Commands defined in this program for RS-WFWATTCH1 are observation-based, and there is no guarantee that the commands are correct.
-You can use this program, but SORELY ON YOUR RESPONSIBILITY AT YOUR OWN RISK. Warranty of RS-WFWATTCH1 may void.
-This program is UNOFFICIAL. **NEVER contact the manufacture of RS-WFWATTCH1 about this program nor any results by using this program.**
+Commands defined in this program for RS-WFWATTCH1 and RS-WFWATTCH2 are observation-based, 
+and there is no guarantee that the commands are correct.
+You can use this program, but SORELY ON YOUR RESPONSIBILITY AT YOUR OWN RISK. 
+Warranty of RS-WFWATTCH1 and RS-WFWATTCH2 may void.
+This program is UNOFFICIAL. 
+**NEVER contact the manufacture of RS-WFWATTCH1 and RS-WFWATTCH2 about this program nor any results by using this program.**
 
 ## Installation
 python >= 3.12 and [influxdb-client](https://github.com/influxdata/influxdb-client-python) are required.
@@ -66,7 +69,7 @@ $ sudo vi /etc/systemd/system/wattcheck.timer
 $ sudo vi /etc/systemd/system/wattcheck.service
 ```
 
-You need to change values in `wattcheck.timer` and `wattcheck.service` to suit your environment.
+You need to adjust values in `wattcheck.timer` and `wattcheck.service` to suit your environment.
 
 ```
 $ sudo systemctl enable wattcheck.timer

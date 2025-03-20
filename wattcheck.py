@@ -18,7 +18,13 @@ def main():
     
     save_data_list = []
     for sensor in settings['sensors']:
-        wattcheck_client = wattchecklib.Command(sensor['ip'], sensor['port'])
+        match sensor['type']:
+            case 'RS-WFWATTCH1':
+                wattcheck_client = wattchecklib.Command(sensor['ip'], sensor['port'])
+            case 'RS-WFWATTCH2':
+                wattcheck_client = wattchecklib.Command2(sensor['ip'], sensor['port'])
+            case _:
+                raise NotImplementedError
         sensor_name = wattcheck_client.get_name()
         measured_data = wattcheck_client.get_measurement()
         save_data = [
