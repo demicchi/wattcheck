@@ -6,9 +6,6 @@ from .command import Command
 # for RS-WFWATTCH2
 class Command2(Command):
     def __init__(self, ip: str, port: int = 60121):
-        self._socket = None
-        self._ip = ip
-        self._port = port
         super().__init__(ip, port)
     
     def get_name(self) -> str:
