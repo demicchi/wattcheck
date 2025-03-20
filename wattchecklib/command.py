@@ -9,12 +9,13 @@ from typing import Concatenate
 from .error import *
 
 
+# for RS-WFWATTCH1
 class Command:
     _socket: socket.socket | None
     _ip: str
     _port: int
     
-    def __init__(self, ip: str, port: int):
+    def __init__(self, ip: str, port: int = 60101):
         self._socket = None
         self._ip = ip
         self._port = port
@@ -149,6 +150,22 @@ class Command:
         
         return version.decode('utf-8')
     
+    @staticmethod
+    def parse_voltage(raw_data: bytes) -> float:
+        return float(int.from_bytes(raw_data, 'little') / (1 << 24))
+    
+    @staticmethod
+    def parse_current(raw_data: bytes) -> float:
+        return float(int.from_bytes(raw_data, 'little') / (1 << 30))
+    
+    @staticmethod
+    def parse_power(raw_data: bytes) -> float:
+        return float(int.from_bytes(raw_data, 'little') / (1 << 24))
+    
+    @staticmethod
+    def parse_timestamp(raw_data: bytes) -> datetime:
+        return datetime(raw_data[5] + 1900, raw_data[4] + 1, raw_data[3], raw_data[2], raw_data[1], raw_data[0])
+    
     @process_read_command(0x18)
     @check_response_status(False)
     def get_measurement(self, _response: bytes, _status: int) -> dict[str, float | datetime]:
@@ -156,9 +173,9 @@ class Command:
             raise GetMeasurementFailedError(f'status: {hex(_status)}, response: {_response}')
         
         return {
-            'voltage': float(int.from_bytes(_response[0:6], 'little') / (16 ** 6)),
-            'current': float(int.from_bytes(_response[6:12], 'little') / (32 ** 6)),
-            'power': float(int.from_bytes(_response[12:18], 'little') / (16 ** 6)),
-            'timestamp': datetime(_response[23] + 1900, _response[22] + 1, _response[21],
-                                  _response[20], _response[19], _response[18]),
+            'voltage': self.parse_voltage(_response[0:6]),
+            'current': self.parse_current(_response[6:12]),
+            'power': self.parse_power(_response[12:18]),
+            'timestamp': self.parse_timestamp(_response[18:24]),
         }
+    
