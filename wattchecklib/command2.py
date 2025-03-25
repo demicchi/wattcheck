@@ -5,8 +5,8 @@ from .command import Command
 
 # for RS-WFWATTCH2
 class Command2(Command):
-    def __init__(self, ip: str, port: int = 60121):
-        super().__init__(ip, port)
+    def __init__(self, ip: str, port: int = 60121, timeout: int | None = None):
+        super().__init__(ip, port, timeout)
     
     def get_name(self) -> str:
         # RS-WFWATTCH2 returns its name with an unnecessary null character, maybe a firmware's bug?

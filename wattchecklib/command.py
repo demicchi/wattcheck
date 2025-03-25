@@ -14,11 +14,13 @@ class Command:
     _socket: socket.socket | None
     _ip: str
     _port: int
+    _timeout: int
     
-    def __init__(self, ip: str, port: int = 60101):
+    def __init__(self, ip: str, port: int = 60101, timeout: int | None = None):
         self._socket = None
         self._ip = ip
         self._port = port
+        self._timeout = timeout
     
     @staticmethod
     def process_read_command[**P, T, C: Command](command: int) \
@@ -70,7 +72,9 @@ class Command:
     def exec_command(self, data: bytes) -> bytes:
         if self._socket is not None:
             self._socket.close()
+        
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._socket.settimeout(self._timeout)
         self._socket.connect((self._ip, self._port))
         self._socket.sendall(self.get_command_binary(data))
         data = self.receive_message()
@@ -101,9 +105,11 @@ class Command:
         
         return data
     
-    def receive_bytes(self, length: int, wait: int = 3) -> bytes:
+    def receive_bytes(self, length: int, wait: int | None = None) -> bytes:
         if self._socket is None:
             raise SocketNotAvailableError
+        if wait is None:
+            wait = self._timeout
         wait_count = 0
         data = bytearray()
         while len(data) < length:

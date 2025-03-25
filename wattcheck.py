@@ -20,13 +20,17 @@ def main():
     for sensor in settings['sensors']:
         match sensor['type']:
             case 'RS-WFWATTCH1':
-                wattcheck_client = wattchecklib.Command(sensor['ip'])
+                wattcheck_client = wattchecklib.Command(sensor['ip'], timeout=sensor['timeout'])
             case 'RS-WFWATTCH2':
-                wattcheck_client = wattchecklib.Command2(sensor['ip'])
+                wattcheck_client = wattchecklib.Command2(sensor['ip'], timeout=sensor['timeout'])
             case _:
                 raise NotImplementedError
-        sensor_name = wattcheck_client.get_name()
-        measured_data = wattcheck_client.get_measurement()
+        try:
+            sensor_name = wattcheck_client.get_name()
+            measured_data = wattcheck_client.get_measurement()
+        except (OSError, ConnectionError, TimeoutError, wattchecklib.error.UnexpectedDataReceivedError) as e:
+            print(f'Failed to get a measurement from {sensor['ip']} -- {e}')
+            continue
         save_data = [
             measured_data['voltage'], measured_data['current'], measured_data['power'], sensor_name, sensor['ip']
         ]
