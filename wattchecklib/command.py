@@ -175,8 +175,15 @@ class Command:
     @process_read_command(0x18)
     @check_response_status(False)
     def get_measurement(self, _response: bytes, _status: int) -> dict[str, float | datetime]:
-        if _status != 0x00:  # maybe - 0x00: success, 0x01: failed
-            raise GetMeasurementFailedError(f'status: {hex(_status)}, response: {_response}')
+        match _status:
+            case 0x00:  # success
+                pass
+            case 0xfe:
+                raise MeasurementNotReadyError(f'status: {hex(_status)}, response: {_response}')
+            case 0xff:
+                raise ClockNotAvailableError(f'status: {hex(_status)}, response: {_response}')
+            case _:  # Other errors
+                raise GetMeasurementFailedError(f'status: {hex(_status)}, response: {_response}')
         
         return {
             'voltage': self.parse_voltage(_response[0:6]),
